@@ -1,0 +1,17 @@
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.Infrastructure.AssemblyInfo.cs
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\bin\Debug\net8.0\Portal.Infrastructure.deps.json
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\bin\Debug\net8.0\Portal.Infrastructure.runtimeconfig.json
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\bin\Debug\net8.0\Portal.Infrastructure.dll
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\bin\Debug\net8.0\Portal.Infrastructure.pdb
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\bin\Debug\net8.0\Portal.Core.dll
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\bin\Debug\net8.0\Portal.Core.pdb
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.I.3FE15598.Up2Date
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.Infrastructure.dll
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\refint\Portal.Infrastructure.dll
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.Infrastructure.pdb
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\Portal.Infrastructure.genruntimeconfig.cache
+C:\Users\bt7\devteam\login\backend\Portal.Infrastructure\obj\Debug\net8.0\ref\Portal.Infrastructure.dll

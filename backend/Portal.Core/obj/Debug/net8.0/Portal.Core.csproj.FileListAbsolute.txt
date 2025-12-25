@@ -1,0 +1,11 @@
+C:\Users\bt7\devteam\login\backend\Portal.Core\bin\Debug\net8.0\Portal.Core.deps.json
+C:\Users\bt7\devteam\login\backend\Portal.Core\bin\Debug\net8.0\Portal.Core.dll
+C:\Users\bt7\devteam\login\backend\Portal.Core\bin\Debug\net8.0\Portal.Core.pdb
+C:\Users\bt7\devteam\login\backend\Portal.Core\obj\Debug\net8.0\Portal.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bt7\devteam\login\backend\Portal.Core\obj\Debug\net8.0\Portal.Core.AssemblyInfoInputs.cache
+C:\Users\bt7\devteam\login\backend\Portal.Core\obj\Debug\net8.0\Portal.Core.AssemblyInfo.cs
+C:\Users\bt7\devteam\login\backend\Portal.Core\obj\Debug\net8.0\Portal.Core.csproj.CoreCompileInputs.cache
+C:\Users\bt7\devteam\login\backend\Portal.Core\obj\Debug\net8.0\Portal.Core.dll
+C:\Users\bt7\devteam\login\backend\Portal.Core\obj\Debug\net8.0\refint\Portal.Core.dll
+C:\Users\bt7\devteam\login\backend\Portal.Core\obj\Debug\net8.0\Portal.Core.pdb
+C:\Users\bt7\devteam\login\backend\Portal.Core\obj\Debug\net8.0\ref\Portal.Core.dll
