@@ -99,20 +99,39 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+// Health check endpoint for Cloud Run
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
+
 // Initialize database
-using (var scope = app.Services.CreateScope())
+try
 {
-    var db = scope.ServiceProvider.GetRequiredService<PortalDbContext>();
-    if (app.Environment.IsDevelopment())
+    using (var scope = app.Services.CreateScope())
     {
-        // InMemory database - just ensure created with seed data
-        db.Database.EnsureCreated();
+        var db = scope.ServiceProvider.GetRequiredService<PortalDbContext>();
+        if (app.Environment.IsDevelopment())
+        {
+            // InMemory database - just ensure created with seed data
+            db.Database.EnsureCreated();
+        }
+        else
+        {
+            // PostgreSQL - run migrations (skip if DATABASE_URL not configured)
+            var dbUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            if (!string.IsNullOrEmpty(dbUrl) && !dbUrl.Contains("localhost"))
+            {
+                db.Database.Migrate();
+            }
+            else
+            {
+                Console.WriteLine("WARNING: DATABASE_URL not configured or using localhost. Skipping migrations.");
+            }
+        }
     }
-    else
-    {
-        // PostgreSQL - run migrations
-        db.Database.Migrate();
-    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Database initialization error (non-fatal): {ex.Message}");
+    // Don't crash the app - it can still serve health checks
 }
 
 app.Run();
