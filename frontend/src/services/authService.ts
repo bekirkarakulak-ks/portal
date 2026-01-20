@@ -1,5 +1,16 @@
 import api from './api';
-import type { LoginRequest, RegisterRequest, AuthResponse, UserInfo } from '../types/auth';
+import type {
+  LoginRequest,
+  RegisterRequest,
+  AuthResponse,
+  UserInfo,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
+} from '../types/auth';
 
 export const authService = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
@@ -23,6 +34,24 @@ export const authService = {
 
   getCurrentUser: async (): Promise<UserInfo> => {
     const response = await api.get<UserInfo>('/auth/me');
+    return response.data;
+  },
+
+  // Şifre değiştirme (giriş yapmış kullanıcı)
+  changePassword: async (data: ChangePasswordRequest): Promise<ChangePasswordResponse> => {
+    const response = await api.post<ChangePasswordResponse>('/auth/change-password', data);
+    return response.data;
+  },
+
+  // Şifremi unuttum
+  forgotPassword: async (data: ForgotPasswordRequest): Promise<ForgotPasswordResponse> => {
+    const response = await api.post<ForgotPasswordResponse>('/auth/forgot-password', data);
+    return response.data;
+  },
+
+  // Şifre sıfırlama
+  resetPassword: async (data: ResetPasswordRequest): Promise<ResetPasswordResponse> => {
+    const response = await api.post<ResetPasswordResponse>('/auth/reset-password', data);
     return response.data;
   },
 };

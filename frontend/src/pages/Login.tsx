@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import logo from '../assets/logo.svg';
 
 export const Login = () => {
   const { login } = useAuth();
@@ -17,7 +18,7 @@ export const Login = () => {
     try {
       await login({ username, password });
     } catch (err) {
-      setError('Kullanici adi veya sifre hatali');
+      setError('Kullanıcı adı veya şifre hatalı');
     } finally {
       setLoading(false);
     }
@@ -26,10 +27,11 @@ export const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Portal Giris</h1>
+        <img src={logo} alt="Logo" className="login-logo" />
+        <h1>Portal Giriş</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Kullanici Adi</label>
+            <label htmlFor="username">Kullanıcı Adı</label>
             <input
               type="text"
               id="username"
@@ -40,7 +42,7 @@ export const Login = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Sifre</label>
+            <label htmlFor="password">Şifre</label>
             <input
               type="password"
               id="password"
@@ -52,11 +54,14 @@ export const Login = () => {
           </div>
           {error && <div className="error-message">{error}</div>}
           <button type="submit" disabled={loading}>
-            {loading ? 'Giris Yapiliyor...' : 'Giris Yap'}
+            {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
           </button>
         </form>
         <p className="register-link">
-          Hesabiniz yok mu? <Link to="/register">Kayit Ol</Link>
+          <Link to="/forgot-password">Sifremi Unuttum</Link>
+        </p>
+        <p className="register-link">
+          Hesabınız yok mu? <Link to="/register">Kayıt Ol</Link>
         </p>
       </div>
     </div>

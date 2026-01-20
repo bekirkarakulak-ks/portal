@@ -33,12 +33,55 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var ipAddress = GetIpAddress();
-        var result = await _authService.RegisterAsync(request, ipAddress);
+        var result = await _authService.RegisterWithVerificationAsync(request, ipAddress);
 
-        if (result == null)
-            return BadRequest(new { message = "Kullanici adi veya email zaten kullaniliyor" });
+        if (!result.Success)
+            return BadRequest(new { message = result.Message });
 
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Email adresinin kayit icin uygun olup olmadigini kontrol eder
+    /// Organizasyon sorgusundan ad/soyad bilgisi doner
+    /// </summary>
+    [HttpGet("check-email")]
+    public async Task<IActionResult> CheckEmail([FromQuery] string email)
+    {
+        if (string.IsNullOrEmpty(email))
+            return BadRequest(new { message = "Email adresi gerekli" });
+
+        var result = await _authService.CheckEmailEligibilityAsync(email);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Email dogrulama tokenini dogrular ve hesabi aktif eder
+    /// </summary>
+    [HttpPost("verify-email")]
+    public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailRequest request)
+    {
+        var ipAddress = GetIpAddress();
+        var result = await _authService.VerifyEmailAsync(request.Token, ipAddress);
+
+        if (!result.Success)
+            return BadRequest(new { message = result.Message });
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Dogrulama emailini tekrar gonderir
+    /// </summary>
+    [HttpPost("resend-verification")]
+    public async Task<IActionResult> ResendVerification([FromBody] ResendVerificationRequest request)
+    {
+        var result = await _authService.ResendVerificationEmailAsync(request.Email);
+
+        if (!result)
+            return BadRequest(new { message = "Dogrulama emaili gonderilemedi" });
+
+        return Ok(new { message = "Dogrulama emaili tekrar gonderildi" });
     }
 
     [HttpPost("refresh-token")]
@@ -66,11 +109,59 @@ public class AuthController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetCurrentUser()
     {
-        var userId = User.GetUserId();
-        var result = await _authService.GetUserInfoAsync(userId);
+        var username = User.GetUsername();
+        var result = await _authService.GetUserInfoByUsernameAsync(username);
 
         if (result == null)
-            return NotFound();
+            return NotFound(new { message = "Kullanici bulunamadi" });
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Giriş yapmış kullanıcının şifresini değiştirir
+    /// </summary>
+    [HttpPost("change-password")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+    {
+        var username = User.GetUsername();
+        var result = await _authService.ChangePasswordAsync(username, request);
+
+        if (!result.Success)
+            return BadRequest(new { message = result.Message });
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Şifremi unuttum - email ile sıfırlama linki gönderir
+    /// </summary>
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    {
+        if (string.IsNullOrEmpty(request.Email))
+            return BadRequest(new { message = "Email adresi gerekli" });
+
+        var result = await _authService.ForgotPasswordAsync(request);
+
+        // Güvenlik için her zaman başarılı dön
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Şifre sıfırlama tokenı ile yeni şifre belirleme
+    /// </summary>
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    {
+        if (string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.NewPassword))
+            return BadRequest(new { message = "Token ve yeni sifre gerekli" });
+
+        var result = await _authService.ResetPasswordAsync(request);
+
+        if (!result.Success)
+            return BadRequest(new { message = result.Message });
 
         return Ok(result);
     }
