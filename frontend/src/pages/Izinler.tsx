@@ -27,11 +27,11 @@ export const Izinler = () => {
       setLoading(true);
       setError('');
       try {
-        // URL'de kullanici ID'si YOK
+        // URL'de kullanıcı ID'si YOK
         const response = await api.get<IzinData>('/ik/izin/me');
         setIzinData(response.data);
       } catch {
-        setError('Izinler yuklenemedi');
+        setError('İzinler yüklenemedi');
       } finally {
         setLoading(false);
       }
@@ -42,7 +42,7 @@ export const Izinler = () => {
 
   const getDurumClass = (durum: string) => {
     switch (durum.toLowerCase()) {
-      case 'onaylandi':
+      case 'onaylandı':
         return 'status-approved';
       case 'bekliyor':
         return 'status-pending';
@@ -57,10 +57,10 @@ export const Izinler = () => {
     <div className="page-container">
       <header className="page-header">
         <Link to="/" className="back-link">← Ana Sayfa</Link>
-        <h1>Izinlerim</h1>
+        <h1>İzinlerim</h1>
       </header>
 
-      {loading && <div className="loading">Yukleniyor...</div>}
+      {loading && <div className="loading">Yükleniyor...</div>}
       {error && <div className="error-message">{error}</div>}
 
       {izinData && !loading && (
@@ -68,27 +68,27 @@ export const Izinler = () => {
           <div className="izin-summary">
             <div className="summary-card">
               <span className="summary-value">{izinData.yillikIzinHakki}</span>
-              <span className="summary-label">Toplam Izin Hakki</span>
+              <span className="summary-label">Toplam İzin Hakkı</span>
             </div>
             <div className="summary-card">
               <span className="summary-value">{izinData.kullanilanIzin}</span>
-              <span className="summary-label">Kullanilan</span>
+              <span className="summary-label">Kullanılan</span>
             </div>
             <div className="summary-card highlight">
               <span className="summary-value">{izinData.kalanIzin}</span>
-              <span className="summary-label">Kalan Izin</span>
+              <span className="summary-label">Kalan İzin</span>
             </div>
           </div>
 
           <div className="izin-list">
-            <h2>Izin Gecmisi</h2>
+            <h2>İzin Geçmişi</h2>
             <table>
               <thead>
                 <tr>
-                  <th>Baslangic</th>
-                  <th>Bitis</th>
-                  <th>Gun</th>
-                  <th>Tur</th>
+                  <th>Başlangıç</th>
+                  <th>Bitiş</th>
+                  <th>Gün</th>
+                  <th>Tür</th>
                   <th>Durum</th>
                 </tr>
               </thead>
@@ -110,7 +110,7 @@ export const Izinler = () => {
             </table>
           </div>
 
-          <button className="primary-btn">Yeni Izin Talebi</button>
+          <button className="primary-btn">Yeni İzin Talebi</button>
         </>
       )}
     </div>

@@ -29,13 +29,13 @@ export const Butce = () => {
       setLoading(true);
       setError('');
       try {
-        // URL'de kullanici ID'si YOK
+        // URL'de kullanıcı ID'si YOK
         const response = await api.get<ButceData>('/butce/me', {
           params: { yil },
         });
         setButce(response.data);
       } catch {
-        setError('Butce bilgisi yuklenemedi');
+        setError('Bütçe bilgisi yüklenemedi');
       } finally {
         setLoading(false);
       }
@@ -53,7 +53,7 @@ export const Butce = () => {
     <div className="page-container">
       <header className="page-header">
         <Link to="/" className="back-link">← Ana Sayfa</Link>
-        <h1>Butcem</h1>
+        <h1>Bütçem</h1>
       </header>
 
       <div className="filters">
@@ -66,14 +66,14 @@ export const Butce = () => {
         </select>
       </div>
 
-      {loading && <div className="loading">Yukleniyor...</div>}
+      {loading && <div className="loading">Yükleniyor...</div>}
       {error && <div className="error-message">{error}</div>}
 
       {butce && !loading && (
         <>
           <div className="butce-summary">
             <div className="butce-overview">
-              <h2>{yil} Yili Butcesi</h2>
+              <h2>{yil} Yılı Bütçesi</h2>
               <div className="butce-progress">
                 <div className="progress-bar">
                   <div
@@ -81,7 +81,7 @@ export const Butce = () => {
                     style={{ width: `${getKullanilmaOrani()}%` }}
                   />
                 </div>
-                <span className="progress-text">%{getKullanilmaOrani()} kullanildi</span>
+                <span className="progress-text">%{getKullanilmaOrani()} kullanıldı</span>
               </div>
             </div>
 
@@ -90,13 +90,13 @@ export const Butce = () => {
                 <span className="stat-value">
                   {butce.toplamButce.toLocaleString('tr-TR')} TL
                 </span>
-                <span className="stat-label">Toplam Butce</span>
+                <span className="stat-label">Toplam Bütçe</span>
               </div>
               <div className="stat-card used">
                 <span className="stat-value">
                   {butce.kullanilanButce.toLocaleString('tr-TR')} TL
                 </span>
-                <span className="stat-label">Kullanilan</span>
+                <span className="stat-label">Kullanılan</span>
               </div>
               <div className="stat-card remaining">
                 <span className="stat-value">
@@ -108,13 +108,13 @@ export const Butce = () => {
           </div>
 
           <div className="harcama-list">
-            <h2>Harcamalarim</h2>
+            <h2>Harcamalarım</h2>
             <table>
               <thead>
                 <tr>
                   <th>Tarih</th>
                   <th>Kategori</th>
-                  <th>Aciklama</th>
+                  <th>Açıklama</th>
                   <th>Tutar</th>
                 </tr>
               </thead>

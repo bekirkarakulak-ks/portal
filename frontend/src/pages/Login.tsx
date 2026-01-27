@@ -58,7 +58,7 @@ export const Login = () => {
           </button>
         </form>
         <p className="register-link">
-          <Link to="/forgot-password">Sifremi Unuttum</Link>
+          <Link to="/forgot-password">Şifremi Unuttum</Link>
         </p>
         <p className="register-link">
           Hesabınız yok mu? <Link to="/register">Kayıt Ol</Link>

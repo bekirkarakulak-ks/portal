@@ -5,10 +5,10 @@ export const Unauthorized = () => {
     <div className="error-page">
       <div className="error-content">
         <h1>403</h1>
-        <h2>Erisim Engellendi</h2>
-        <p>Bu sayfaya erisim yetkiniz bulunmamaktadir.</p>
+        <h2>Erişim Engellendi</h2>
+        <p>Bu sayfaya erişim yetkiniz bulunmamaktadır.</p>
         <Link to="/" className="primary-btn">
-          Ana Sayfaya Don
+          Ana Sayfaya Dön
         </Link>
       </div>
     </div>

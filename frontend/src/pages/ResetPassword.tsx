@@ -16,7 +16,7 @@ export default function ResetPassword() {
 
   useEffect(() => {
     if (!token) {
-      setError('Gecersiz sifre sifirlama linki.');
+      setError('Geçersiz şifre sıfırlama linki.');
     }
   }, [token]);
 
@@ -26,17 +26,17 @@ export default function ResetPassword() {
 
     // Validasyonlar
     if (newPassword.length < 6) {
-      setError('Sifre en az 6 karakter olmalidir.');
+      setError('Şifre en az 6 karakter olmalıdır.');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError('Sifreler eslesmiyor.');
+      setError('Şifreler eşleşmiyor.');
       return;
     }
 
     if (!token) {
-      setError('Gecersiz sifre sifirlama linki.');
+      setError('Geçersiz şifre sıfırlama linki.');
       return;
     }
 
@@ -55,7 +55,7 @@ export default function ResetPassword() {
       }
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      setError(error.response?.data?.message || 'Bir hata olustu. Lutfen tekrar deneyin.');
+      setError(error.response?.data?.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setIsLoading(false);
     }
@@ -68,15 +68,15 @@ export default function ResetPassword() {
           <img src={logo} alt="Logo" className="login-logo" />
           <div className="success-container">
             <div className="success-icon large">&#10003;</div>
-            <h2>Sifre Sifirlandi</h2>
+            <h2>Şifre Sıfırlandı</h2>
             <p className="info-text">
-              Sifreniz basariyla degistirildi. Simdi yeni sifrenizle giris yapabilirsiniz.
+              Şifreniz başarıyla değiştirildi. Şimdi yeni şifrenizle giriş yapabilirsiniz.
             </p>
             <p className="info-text small">
-              Giris sayfasina yonlendiriliyorsunuz...
+              Giriş sayfasına yönlendiriliyorsunuz...
             </p>
             <Link to="/login" className="btn-primary">
-              Giris Yap
+              Giriş Yap
             </Link>
           </div>
         </div>
@@ -91,9 +91,9 @@ export default function ResetPassword() {
           <img src={logo} alt="Logo" className="login-logo" />
           <div className="verify-status error">
             <div className="error-icon large">!</div>
-            <h2>Gecersiz Link</h2>
+            <h2>Geçersiz Link</h2>
             <p className="info-text">
-              Bu sifre sifirlama linki gecersiz veya suresi dolmus.
+              Bu şifre sıfırlama linki geçersiz veya süresi dolmuş.
             </p>
             <Link to="/forgot-password" className="btn-primary">
               Yeni Link Talep Et
@@ -108,16 +108,16 @@ export default function ResetPassword() {
     <div className="login-container">
       <div className="login-card">
         <img src={logo} alt="Logo" className="login-logo" />
-        <h1>Yeni Sifre Belirle</h1>
+        <h1>Yeni Şifre Belirle</h1>
         <p className="info-text" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          Lutfen yeni sifrenizi girin.
+          Lütfen yeni şifrenizi girin.
         </p>
 
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="newPassword">Yeni Sifre</label>
+            <label htmlFor="newPassword">Yeni Şifre</label>
             <input
               type="password"
               id="newPassword"
@@ -131,13 +131,13 @@ export default function ResetPassword() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Sifre Tekrar</label>
+            <label htmlFor="confirmPassword">Şifre Tekrar</label>
             <input
               type="password"
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Sifrenizi tekrar girin"
+              placeholder="Şifrenizi tekrar girin"
               required
               minLength={6}
               disabled={isLoading}
@@ -145,12 +145,12 @@ export default function ResetPassword() {
           </div>
 
           <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Kaydediliyor...' : 'Sifremi Degistir'}
+            {isLoading ? 'Kaydediliyor...' : 'Şifremi Değiştir'}
           </button>
         </form>
 
         <div className="register-link">
-          <Link to="/login">Giris sayfasina don</Link>
+          <Link to="/login">Giriş sayfasına dön</Link>
         </div>
       </div>
     </div>

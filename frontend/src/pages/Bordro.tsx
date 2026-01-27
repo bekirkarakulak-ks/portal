@@ -26,13 +26,13 @@ export const Bordro = () => {
       setLoading(true);
       setError('');
       try {
-        // URL'de kullanici ID'si YOK - backend session'dan aliyor
+        // URL'de kullanıcı ID'si YOK - backend session'dan alıyor
         const response = await api.get<BordroData>('/ik/bordro/me', {
           params: { ay, yil },
         });
         setBordro(response.data);
       } catch {
-        setError('Bordro yuklenemedi');
+        setError('Bordro yüklenemedi');
       } finally {
         setLoading(false);
       }
@@ -42,8 +42,8 @@ export const Bordro = () => {
   }, [ay, yil]);
 
   const aylar = [
-    'Ocak', 'Subat', 'Mart', 'Nisan', 'Mayis', 'Haziran',
-    'Temmuz', 'Agustos', 'Eylul', 'Ekim', 'Kasim', 'Aralik',
+    'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+    'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık',
   ];
 
   return (
@@ -70,7 +70,7 @@ export const Bordro = () => {
         </select>
       </div>
 
-      {loading && <div className="loading">Yukleniyor...</div>}
+      {loading && <div className="loading">Yükleniyor...</div>}
       {error && <div className="error-message">{error}</div>}
 
       {bordro && !loading && (
@@ -80,7 +80,7 @@ export const Bordro = () => {
           </h2>
           <div className="bordro-details">
             <div className="bordro-row">
-              <span>Brut Maas:</span>
+              <span>Brüt Maaş:</span>
               <span className="amount">{bordro.brutMaas.toLocaleString('tr-TR')} TL</span>
             </div>
             <div className="bordro-row kesinti-header">
@@ -93,7 +93,7 @@ export const Bordro = () => {
               </div>
             ))}
             <div className="bordro-row total">
-              <span>Net Maas:</span>
+              <span>Net Maaş:</span>
               <span className="amount">{bordro.netMaas.toLocaleString('tr-TR')} TL</span>
             </div>
           </div>
@@ -102,8 +102,8 @@ export const Bordro = () => {
 
       <div className="security-note">
         <p>
-          <strong>Guvenlik Notu:</strong> Bu sayfa sadece sizin bordronuzu gosterir.
-          Link paylasilduginda bile, herkes kendi bordrosunu gorebilir.
+          <strong>Güvenlik Notu:</strong> Bu sayfa sadece sizin bordronuzu gösterir.
+          Link paylaşıldığında bile, herkes kendi bordrosunu görebilir.
         </p>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { useAuthStore } from '../store/authStore';
 import authService from '../services/authService';
 import logo from '../assets/logo.svg';
 
@@ -13,6 +14,21 @@ export const Dashboard = () => {
   const [passwordError, setPasswordError] = useState('');
   const [passwordSuccess, setPasswordSuccess] = useState('');
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [activeApp, setActiveApp] = useState<string | null>(null);
+  const [appUrl, setAppUrl] = useState<string>('');
+
+  const openEmbeddedApp = (appName: string, baseUrl: string) => {
+    const { accessToken, refreshToken } = useAuthStore.getState();
+    const token = encodeURIComponent(accessToken || '');
+    const refresh = encodeURIComponent(refreshToken || '');
+    setAppUrl(`${baseUrl}?token=${token}&refresh=${refresh}`);
+    setActiveApp(appName);
+  };
+
+  const closeEmbeddedApp = () => {
+    setActiveApp(null);
+    setAppUrl('');
+  };
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,12 +36,12 @@ export const Dashboard = () => {
     setPasswordSuccess('');
 
     if (newPassword.length < 6) {
-      setPasswordError('Yeni sifre en az 6 karakter olmalidir.');
+      setPasswordError('Yeni şifre en az 6 karakter olmalıdır.');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setPasswordError('Sifreler eslesmiyor.');
+      setPasswordError('Şifreler eşleşmiyor.');
       return;
     }
 
@@ -51,7 +67,7 @@ export const Dashboard = () => {
       }
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      setPasswordError(error.response?.data?.message || 'Bir hata olustu.');
+      setPasswordError(error.response?.data?.message || 'Bir hata oluştu.');
     } finally {
       setIsChangingPassword(false);
     }
@@ -78,22 +94,42 @@ export const Dashboard = () => {
             {user?.firstName} {user?.lastName}
           </span>
           <button onClick={() => setShowPasswordModal(true)} className="logout-btn">
-            Sifre Degistir
+            Şifre Değiştir
           </button>
           <button onClick={logout} className="logout-btn">
-            Cikis Yap
+            Çıkış Yap
           </button>
         </div>
       </header>
 
-      <main className="dashboard-content">
-        <h2>Hos geldiniz, {user?.firstName}!</h2>
+      {/* Embedded App View */}
+      {activeApp && (
+        <div className="embedded-app-container">
+          <div className="embedded-app-header">
+            <button onClick={closeEmbeddedApp} className="back-to-dashboard">
+              ← Portal'a Dön
+            </button>
+            <span className="embedded-app-title">{activeApp}</span>
+          </div>
+          <iframe
+            src={appUrl}
+            className="embedded-app-iframe"
+            title={activeApp}
+            allow="clipboard-read; clipboard-write"
+          />
+        </div>
+      )}
 
-        <div className="modules-grid">
+      {/* Dashboard Content */}
+      {!activeApp && (
+        <main className="dashboard-content">
+          <h2>Hoş geldiniz, {user?.firstName}!</h2>
+
+          <div className="modules-grid">
           {/* IK Modulu */}
           {hasAnyPermission(['IK.Bordro.Kendi', 'IK.Izin.Kendi']) && (
             <div className="module-card">
-              <h3>Insan Kaynaklari</h3>
+              <h3>İnsan Kaynakları</h3>
               <ul>
                 {hasPermission('IK.Bordro.Kendi') && (
                   <li>
@@ -102,76 +138,95 @@ export const Dashboard = () => {
                 )}
                 {hasPermission('IK.Izin.Kendi') && (
                   <li>
-                    <Link to="/ik/izinler">Izinlerim</Link>
+                    <Link to="/ik/izinler">İzinlerim</Link>
                   </li>
                 )}
                 {hasPermission('IK.Bordro.Tumu') && (
                   <li>
-                    <Link to="/ik/yonetim">IK Yonetimi</Link>
+                    <Link to="/ik/yonetim">İK Yönetimi</Link>
                   </li>
                 )}
               </ul>
             </div>
           )}
 
-          {/* Butce Modulu */}
+          {/* Bütçe Modülü */}
           {hasPermission('Butce.Kendi') && (
             <div className="module-card">
-              <h3>Butce</h3>
+              <h3>Bütçe</h3>
               <ul>
                 {hasPermission('Butce.Kendi') && (
                   <li>
-                    <Link to="/butce">Butcem</Link>
+                    <Link to="/butce">Bütçem</Link>
                   </li>
                 )}
                 {hasPermission('Butce.Tumu') && (
                   <li>
-                    <Link to="/butce/yonetim">Butce Yonetimi</Link>
+                    <Link to="/butce/yonetim">Bütçe Yönetimi</Link>
                   </li>
                 )}
               </ul>
             </div>
           )}
 
-          {/* Admin Modulu */}
+          {/* Admin Modülü */}
           {hasPermission('Admin.Access') && (
             <div className="module-card">
-              <h3>Yonetim</h3>
+              <h3>Yönetim</h3>
               <ul>
                 <li>
                   <Link to="/admin">Admin Paneli</Link>
                 </li>
                 {hasPermission('Admin.Kullanici.Goruntule') && (
                   <li>
-                    <Link to="/admin/users">Kullanici Yonetimi</Link>
+                    <Link to="/admin/users">Kullanıcı Yönetimi</Link>
                   </li>
                 )}
                 {hasPermission('Admin.Rol.Goruntule') && (
                   <li>
-                    <Link to="/admin/roles">Rol Yonetimi</Link>
+                    <Link to="/admin/roles">Rol Yönetimi</Link>
                   </li>
                 )}
+              </ul>
+            </div>
+          )}
+
+          {/* ERP Modülü - Admin yetkisi olanlar için */}
+          {hasPermission('Admin.Access') && (
+            <div className="module-card">
+              <h3>ERP Uygulamaları</h3>
+              <ul>
+                <li>
+                  <button
+                    type="button"
+                    className="link-button"
+                    onClick={() => openEmbeddedApp('Konyali ERP', 'https://erp-web-518226731997.europe-west2.run.app')}
+                  >
+                    Konyali ERP (Transfer Analizi)
+                  </button>
+                </li>
               </ul>
             </div>
           )}
         </div>
 
         <div className="permissions-info">
-          <h3>Yetkileriniz</h3>
-          <ul>
-            {user?.permissions.map((perm) => (
-              <li key={perm}>{perm}</li>
-            ))}
-          </ul>
-        </div>
-      </main>
+            <h3>Yetkileriniz</h3>
+            <ul>
+              {user?.permissions.map((perm) => (
+                <li key={perm}>{perm}</li>
+              ))}
+            </ul>
+          </div>
+        </main>
+      )}
 
       {/* Şifre Değiştirme Modal */}
       {showPasswordModal && (
         <div className="modal-overlay" onClick={closePasswordModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Sifre Degistir</h3>
+              <h3>Şifre Değiştir</h3>
               <button className="modal-close" onClick={closePasswordModal}>
                 &times;
               </button>
@@ -186,7 +241,7 @@ export const Dashboard = () => {
                 )}
 
                 <div className="form-group">
-                  <label htmlFor="currentPassword">Mevcut Sifre</label>
+                  <label htmlFor="currentPassword">Mevcut Şifre</label>
                   <input
                     type="password"
                     id="currentPassword"
@@ -198,7 +253,7 @@ export const Dashboard = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="newPassword">Yeni Sifre</label>
+                  <label htmlFor="newPassword">Yeni Şifre</label>
                   <input
                     type="password"
                     id="newPassword"
@@ -212,7 +267,7 @@ export const Dashboard = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="confirmPassword">Yeni Sifre Tekrar</label>
+                  <label htmlFor="confirmPassword">Yeni Şifre Tekrar</label>
                   <input
                     type="password"
                     id="confirmPassword"
@@ -226,10 +281,10 @@ export const Dashboard = () => {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn-secondary" onClick={closePasswordModal} disabled={isChangingPassword}>
-                  Iptal
+                  İptal
                 </button>
                 <button type="submit" className="btn-primary" disabled={isChangingPassword}>
-                  {isChangingPassword ? 'Kaydediliyor...' : 'Sifreyi Degistir'}
+                  {isChangingPassword ? 'Kaydediliyor...' : 'Şifreyi Değiştir'}
                 </button>
               </div>
             </form>
