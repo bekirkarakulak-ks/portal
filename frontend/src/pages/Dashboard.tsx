@@ -192,19 +192,32 @@ export const Dashboard = () => {
           )}
 
           {/* ERP Modülü - Admin yetkisi olanlar için */}
-          {hasPermission('Admin.Access') && (
+          {(hasPermission('Admin.Access') || hasAnyPermission(['Siparis.Donem.Goruntule', 'Siparis.Talep.Goruntule', 'Siparis.Limit.Goruntule'])) && (
             <div className="module-card">
               <h3>ERP Uygulamaları</h3>
               <ul>
-                <li>
-                  <button
-                    type="button"
-                    className="link-button"
-                    onClick={() => openEmbeddedApp('Konyali ERP', 'https://erp-web-518226731997.europe-west2.run.app')}
-                  >
-                    Konyali ERP (Transfer Analizi)
-                  </button>
-                </li>
+                {hasPermission('Admin.Access') && (
+                  <li>
+                    <button
+                      type="button"
+                      className="link-button"
+                      onClick={() => openEmbeddedApp('Konyali ERP', 'https://erp-web-518226731997.europe-west2.run.app')}
+                    >
+                      Konyali ERP (Transfer Analizi)
+                    </button>
+                  </li>
+                )}
+                {hasAnyPermission(['Siparis.Donem.Goruntule', 'Siparis.Talep.Goruntule', 'Siparis.Limit.Goruntule']) && (
+                  <li>
+                    <button
+                      type="button"
+                      className="link-button"
+                      onClick={() => openEmbeddedApp('Mağaza Sipariş', 'https://siparis-web-518226731997.europe-west2.run.app')}
+                    >
+                      Mağaza Sipariş Sistemi
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
           )}
